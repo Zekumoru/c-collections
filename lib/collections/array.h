@@ -3,11 +3,14 @@
 
 #include <stddef.h>
 
+/**
+ * An Array collection.
+ */
 typedef struct Array
 {
-  void **elements;
-  size_t size;
-  size_t allocSize;
+  void **elements;  /**< Pointer to the array elements. */
+  size_t size;      /**< Number of elements in the array. */
+  size_t allocSize; /**< Total allocated size for the array. */
 
   /**
    * \brief Adds a new element to the array.
@@ -111,6 +114,10 @@ typedef struct Array
   void (*destroy)(struct Array *array, void (*destroyElementFn)(void *element));
 } Array;
 
+/**
+ * \brief Create a new Array collection.
+ * \return The new Array collection.
+ */
 Array *createArray();
 
 #endif // COLLECTIONS_ARRAY_H
