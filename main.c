@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lib/collections.h"
+#include "lib/collections/collections.h"
 
 typedef struct Integer
 {
