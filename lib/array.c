@@ -76,6 +76,7 @@ void *remove_Array(Array *array, void *element)
   if (removedElement != NULL)
   {
     array->size--;
+    array->elements[array->size] = NULL;
     dallocArray(array);
   }
 
