@@ -33,9 +33,19 @@ typedef struct Array
    * \warning It is up to the caller to free the removed element.
    */
   void *(*remove)(struct Array *array, void *element);
-  void *(*insertAt)(struct Array *array, size_t index);
+
+  /**
+   * \brief Removes an element given by an index from the array.
+   * \param array This array.
+   * \param index The index of the element to remove.
+   * \return The removed element. If the element is not in the
+   *         array or the index is invalid, returns NULL.
+   * \warning It is up to the caller to free the removed element.
+   */
   void *(*removeAt)(struct Array *array, size_t index);
+
   void (*removeAll)(struct Array *array, void (*destroyElementFn)(void *element));
+  void *(*insertAt)(struct Array *array, size_t index);
   void *(*at)(struct Array *array, size_t index);
   char *(*toString)(struct Array *array, char *(*stringifyFn)(void *element));
 } Array;

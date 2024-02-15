@@ -7,6 +7,7 @@ void dallocArray(Array *array);
 void add_Array(Array *array, void *element);
 size_t indexOf_Array(Array *array, void *element);
 void *remove_Array(Array *array, void *element);
+void *removeAt_Array(Array *array, size_t index);
 
 Array *createArray()
 {
@@ -16,9 +17,9 @@ Array *createArray()
   array->add = add_Array;
   array->indexOf = indexOf_Array;
   array->remove = remove_Array;
-  array->insertAt = NULL;
-  array->removeAt = NULL;
+  array->removeAt = removeAt_Array;
   array->removeAll = NULL;
+  array->insertAt = NULL;
   array->at = NULL;
   array->toString = NULL;
   return array;
@@ -72,4 +73,11 @@ void *remove_Array(Array *array, void *element)
   }
 
   return removedElement;
+}
+
+void *removeAt_Array(Array *array, size_t index)
+{
+  if (index >= array->size)
+    return NULL;
+  return remove_Array(array, array->elements[index]);
 }
