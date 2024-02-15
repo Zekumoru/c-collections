@@ -94,6 +94,21 @@ typedef struct Array
    * \warning It is up to the caller to free the stringified array.
    */
   char *(*toString)(struct Array *array, char *(*stringifyFn)(void *element));
+
+  /**
+   * \brief Frees the array from memory.
+   *
+   * Freeing the array from memory might cause memory leaks if the
+   * destroyElementFn is not passed to handle the freeing of each element
+   * from memory.
+   *
+   * That being said, destroyElementFn can be null.
+   *
+   * \param array This array.
+   * \param destroyElementFn The function used to free each element.
+   * \warning Pass the destroy element function to prevent memory leaks.
+   */
+  void (*destroy)(struct Array *array, void (*destroyElementFn)(void *element));
 } Array;
 
 Array *createArray();

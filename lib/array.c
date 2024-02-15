@@ -13,6 +13,7 @@ void removeAll_Array(Array *array, void (*destroyElementFn)(void *element));
 void insertAt_Array(Array *array, void *element, size_t index);
 void *at_Array(Array *array, size_t index);
 char *toString_Array(Array *array, char *(*stringifyFn)(void *element));
+void destroy_Array(Array *array, void (*destroyElementFn)(void *element));
 
 Array *createArray()
 {
@@ -27,6 +28,7 @@ Array *createArray()
   array->insertAt = insertAt_Array;
   array->at = at_Array;
   array->toString = toString_Array;
+  array->destroy = destroy_Array;
   return array;
 }
 
@@ -162,4 +164,11 @@ char *toString_Array(Array *array, char *(*stringifyFn)(void *element))
   free(elementStrings);
 
   return stringified;
+}
+
+void destroy_Array(Array *array, void (*destroyElementFn)(void *element))
+{
+  removeAll_Array(array, destroyElementFn);
+  free(array->elements);
+  free(array);
 }
