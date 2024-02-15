@@ -10,6 +10,7 @@ size_t indexOf_Array(Array *array, void *element);
 void *remove_Array(Array *array, void *element);
 void *removeAt_Array(Array *array, size_t index);
 void removeAll_Array(Array *array, void (*destroyElementFn)(void *element));
+void insertAt_Array(Array *array, void *element, size_t index);
 char *toString_Array(Array *array, char *(*stringifyFn)(void *element));
 
 Array *createArray()
@@ -22,7 +23,7 @@ Array *createArray()
   array->remove = remove_Array;
   array->removeAt = removeAt_Array;
   array->removeAll = removeAll_Array;
-  array->insertAt = NULL;
+  array->insertAt = insertAt_Array;
   array->at = NULL;
   array->toString = toString_Array;
   return array;
@@ -93,6 +94,28 @@ void removeAll_Array(Array *array, void (*destroyElementFn)(void *element))
     if (destroyElementFn != NULL)
       destroyElementFn(array->elements[i]);
     removeAt_Array(array, i);
+  }
+}
+
+void insertAt_Array(Array *array, void *element, size_t index)
+{
+  dallocArray(array);
+  array->size++;
+
+  if (index >= array->size)
+    index = array->size - 1;
+
+  // FYI: if a size_t is decremented below 0, it becomes -1
+  for (size_t i = array->size - 1; i != -1; i--)
+  {
+    if (i == index)
+    {
+      array->elements[i] = element;
+      break;
+    }
+
+    // shift the array until the new element is inserted
+    array->elements[i] = array->elements[i - 1];
   }
 }
 

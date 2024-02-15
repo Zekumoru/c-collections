@@ -52,7 +52,18 @@ typedef struct Array
    */
   void (*removeAll)(struct Array *array, void (*destroyElementFn)(void *element));
 
-  void *(*insertAt)(struct Array *array, size_t index);
+  /**
+   * \brief Inserts an element in the array.
+   *
+   * If the index is greater than the size of the array, insert at the end.
+   * Normally I'd say that if the index is less than 0 then insert at the
+   * beginning but I'm using a size_t so no.
+   *
+   * \param array This array.
+   * \param element The new element to insert.
+   * \param index The index where to insert the element.
+   */
+  void (*insertAt)(struct Array *array, void *element, size_t index);
   void *(*at)(struct Array *array, size_t index);
 
   /**
