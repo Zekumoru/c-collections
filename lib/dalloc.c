@@ -1,25 +1,24 @@
 #include "dalloc.h"
 #include <stdlib.h>
 #include <stdbool.h>
+#include <math.h>
 
 void *_dalloc(void *memory, size_t elementSize, size_t currentSize, size_t *allocSize)
 {
   bool toReallocate = false;
 
-  // dynamically reallocate by O(log n)
-  while (currentSize >= *allocSize)
+  if (currentSize == 0)
   {
-    if (*allocSize == 0)
-      *allocSize = 1;
-    else
-      (*allocSize) *= 2;
+    *allocSize = 1;
     toReallocate = true;
   }
 
-  // reallocate minimizing space if possible
-  for (size_t newAllocSize = (*allocSize) / 2; currentSize < newAllocSize; newAllocSize /= 2)
+  // dynamically reallocate by O(log n)
+  // first condition: reallocate minimizing space if possible
+  // second condition: reallocate maximizing space to contain new size limit
+  if (currentSize < ((*allocSize) / 2) || currentSize >= *allocSize)
   {
-    *allocSize = newAllocSize;
+    *allocSize = pow(2, ceil(log2(currentSize)));
     toReallocate = true;
   }
 
