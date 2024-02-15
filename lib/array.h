@@ -44,7 +44,14 @@ typedef struct Array
    */
   void *(*removeAt)(struct Array *array, size_t index);
 
+  /**
+   * \brief Removes all element in the array.
+   * \param array This array.
+   * \param destroyElementFn The function used to free each element.
+   * \warning The destroy element function is mandatory to prevent memory leaks.
+   */
   void (*removeAll)(struct Array *array, void (*destroyElementFn)(void *element));
+
   void *(*insertAt)(struct Array *array, size_t index);
   void *(*at)(struct Array *array, size_t index);
 

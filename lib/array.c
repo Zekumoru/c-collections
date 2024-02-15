@@ -9,6 +9,7 @@ void add_Array(Array *array, void *element);
 size_t indexOf_Array(Array *array, void *element);
 void *remove_Array(Array *array, void *element);
 void *removeAt_Array(Array *array, size_t index);
+void removeAll_Array(Array *array, void (*destroyElementFn)(void *element));
 char *toString_Array(Array *array, char *(*stringifyFn)(void *element));
 
 Array *createArray()
@@ -20,7 +21,7 @@ Array *createArray()
   array->indexOf = indexOf_Array;
   array->remove = remove_Array;
   array->removeAt = removeAt_Array;
-  array->removeAll = NULL;
+  array->removeAll = removeAll_Array;
   array->insertAt = NULL;
   array->at = NULL;
   array->toString = toString_Array;
@@ -82,6 +83,17 @@ void *removeAt_Array(Array *array, size_t index)
   if (index >= array->size)
     return NULL;
   return remove_Array(array, array->elements[index]);
+}
+
+void removeAll_Array(Array *array, void (*destroyElementFn)(void *element))
+{
+  // FYI: if a size_t is decremented below 0, it becomes -1
+  for (size_t i = array->size - 1; i != -1; i--)
+  {
+    if (destroyElementFn != NULL)
+      destroyElementFn(array->elements[i]);
+    removeAt_Array(array, i);
+  }
 }
 
 char *toString_Array(Array *array, char *(*stringifyFn)(void *element))
