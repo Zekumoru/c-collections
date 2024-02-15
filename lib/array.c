@@ -11,6 +11,7 @@ void *remove_Array(Array *array, void *element);
 void *removeAt_Array(Array *array, size_t index);
 void removeAll_Array(Array *array, void (*destroyElementFn)(void *element));
 void insertAt_Array(Array *array, void *element, size_t index);
+void *at_Array(Array *array, size_t index);
 char *toString_Array(Array *array, char *(*stringifyFn)(void *element));
 
 Array *createArray()
@@ -24,7 +25,7 @@ Array *createArray()
   array->removeAt = removeAt_Array;
   array->removeAll = removeAll_Array;
   array->insertAt = insertAt_Array;
-  array->at = NULL;
+  array->at = at_Array;
   array->toString = toString_Array;
   return array;
 }
@@ -117,6 +118,13 @@ void insertAt_Array(Array *array, void *element, size_t index)
     // shift the array until the new element is inserted
     array->elements[i] = array->elements[i - 1];
   }
+}
+
+void *at_Array(Array *array, size_t index)
+{
+  if (index >= array->size)
+    return NULL;
+  return array->elements[index];
 }
 
 char *toString_Array(Array *array, char *(*stringifyFn)(void *element))

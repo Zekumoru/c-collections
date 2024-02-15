@@ -64,6 +64,20 @@ typedef struct Array
    * \param index The index where to insert the element.
    */
   void (*insertAt)(struct Array *array, void *element, size_t index);
+
+  /**
+   * \brief Returns the element at the given index in the array.
+   *
+   * Why would you want to use this function? To not get yelled at by the memory
+   * that you're trying to access an element outside the bounds of the array.
+   *
+   * Though, this is unnecessary if you want anyway.
+   *
+   * \param array This array.
+   * \param index The index of the element to return.
+   * \return The element at the given index, if the index is invalid,
+   *         returns NULL.
+   */
   void *(*at)(struct Array *array, size_t index);
 
   /**
