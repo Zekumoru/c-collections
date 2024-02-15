@@ -47,6 +47,20 @@ typedef struct Array
   void (*removeAll)(struct Array *array, void (*destroyElementFn)(void *element));
   void *(*insertAt)(struct Array *array, size_t index);
   void *(*at)(struct Array *array, size_t index);
+
+  /**
+   * \brief Stringifies the array.
+   *
+   * The stringifyFn must return the string version of each element for this
+   * function to be able to stringify the whole array. The string returned by
+   * stringifyFn is freed internally.
+   *
+   * \param array This array.
+   * \param stringifyFn A function pointer on how to handle stringifying each
+   *                    element.
+   * \return The stringified array.
+   * \warning It is up to the caller to free the stringified array.
+   */
   char *(*toString)(struct Array *array, char *(*stringifyFn)(void *element));
 } Array;
 

@@ -1,6 +1,7 @@
 #include "array.h"
 #include "dalloc.h"
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 
 void dallocArray(Array *array);
@@ -8,6 +9,7 @@ void add_Array(Array *array, void *element);
 size_t indexOf_Array(Array *array, void *element);
 void *remove_Array(Array *array, void *element);
 void *removeAt_Array(Array *array, size_t index);
+char *toString_Array(Array *array, char *(*stringifyFn)(void *element));
 
 Array *createArray()
 {
@@ -21,7 +23,7 @@ Array *createArray()
   array->removeAll = NULL;
   array->insertAt = NULL;
   array->at = NULL;
-  array->toString = NULL;
+  array->toString = toString_Array;
   return array;
 }
 
@@ -80,4 +82,41 @@ void *removeAt_Array(Array *array, size_t index)
   if (index >= array->size)
     return NULL;
   return remove_Array(array, array->elements[index]);
+}
+
+char *toString_Array(Array *array, char *(*stringifyFn)(void *element))
+{
+  if (stringifyFn == NULL)
+    return NULL;
+
+  // '[', ']', '\0' plus ", " for each element exluding the last element
+  size_t length = 1 + 1 + 1 + 2 * (array->size - 1);
+
+  // extract each stringified version of the elements
+  char **elementStrings = malloc(sizeof(char *) * array->size);
+  for (size_t i = 0; i < array->size; i++)
+  {
+    elementStrings[i] = stringifyFn(array->elements[i]);
+    if (elementStrings[i] != NULL)
+      length += strlen(elementStrings[i]);
+  }
+
+  // build string array and also free the elements' strings
+  char *stringified = malloc(length);
+  strcpy(stringified, "[");
+  for (size_t i = 0; i < array->size; i++)
+  {
+    if (elementStrings[i] != NULL)
+    {
+      strcat(stringified, elementStrings[i]);
+      free(elementStrings[i]);
+    }
+
+    if (i != (array->size - 1))
+      strcat(stringified, ", ");
+  }
+  strcat(stringified, "]");
+  free(elementStrings);
+
+  return stringified;
 }
