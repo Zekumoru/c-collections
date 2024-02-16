@@ -195,8 +195,34 @@ void *removeEnd_LinkedList(LinkedList *list)
 
 void *remove_LinkedList(LinkedList *list, void *element)
 {
-  // stub!
-  return NULL;
+  // Case: no elements
+  if (list->head == NULL && list->tail == NULL && list->size == 0)
+    return NULL;
+
+  // Case: element to remove is in the head or tail
+  if (list->head->value == element)
+    return removeBeg_LinkedList(list);
+  if (list->tail->value == element)
+    return removeEnd_LinkedList(list);
+
+  // Case: element is in the middle
+  void *removedElement = NULL;
+  for (LinkedNode *current = list->head; current != NULL; current = current->next)
+  {
+    if (current->value != element)
+      continue;
+
+    LinkedNode *preCurrent = current->prev;
+    LinkedNode *postCurrent = current->next;
+    removedElement = destroyLinkedNode(current);
+    if (preCurrent != NULL)
+      preCurrent->next = postCurrent;
+    if (postCurrent != NULL)
+      postCurrent->prev = preCurrent;
+    break;
+  }
+
+  return removedElement;
 }
 
 void *removeAt_LinkedList(LinkedList *list, size_t index)
