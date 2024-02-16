@@ -29,21 +29,37 @@ char *stringifyInteger(Integer *integer)
 
 int main()
 {
-  Array *array = createArray();
+  LinkedList *list = createLinkedList();
 
-  array->insertAt(array, createInteger(4), 100);
-  array->add(array, createInteger(1));
-  array->add(array, createInteger(2));
-  array->insertAt(array, createInteger(5), 2);
-  array->add(array, createInteger(3));
+  Integer *one = createInteger(1);
+  Integer *two = createInteger(2);
+  Integer *three = createInteger(3);
+  Integer *four = createInteger(4);
+  Integer *five = createInteger(5);
+  Integer *six = createInteger(6);
+  Integer *seven = createInteger(7);
 
-  destroyInteger(array->removeAt(array, 1));
+  list->append(list, one);
+  list->append(list, two);
+  list->append(list, three);
+  list->append(list, four);
+  list->append(list, five);
+  list->append(list, six);
+  list->append(list, seven);
 
-  char *arrayString = array->toString(array, (char *(*)(void *))stringifyInteger);
-  printf("%s\n", arrayString);
-  free(arrayString);
+  char *str = list->toString(list, (char *(*)(void *))stringifyInteger);
+  printf("List: %s\n", str);
+  free(str);
 
-  array->destroy(array, (void (*)(void *))destroyInteger);
+  printf("List from tail: [");
+  for (LinkedNode *current = list->tail; current != NULL; current = current->prev)
+  {
+    printf("%d", ((Integer *)current->value)->value);
+    if (current->prev != NULL)
+      printf(", ");
+  }
+  printf("]\n");
 
+  list->destroy(list, (void (*)(void *))destroyInteger);
   return 0;
 }
