@@ -114,13 +114,16 @@ void insertAt_LinkedList(LinkedList *list, void *element, size_t size)
     return;
   }
 
-  // Case: has one element
-  if (list->size == 1 && list->head == list->tail)
+  // Case: size is out of bounds
+  if (size >= list->size)
   {
-    if (size >= list->size)
-      append_LinkedList(list, element);
-    else
-      prepend_LinkedList(list, element);
+    append_LinkedList(list, element);
+    return;
+  }
+
+  if (size == 0)
+  {
+    prepend_LinkedList(list, element);
     return;
   }
 
