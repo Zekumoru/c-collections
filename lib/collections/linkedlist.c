@@ -219,6 +219,7 @@ void *remove_LinkedList(LinkedList *list, void *element)
       preCurrent->next = postCurrent;
     if (postCurrent != NULL)
       postCurrent->prev = preCurrent;
+    list->size--;
     break;
   }
 
