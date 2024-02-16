@@ -47,14 +47,14 @@ LinkedNode *createLinkedNode(void *value)
 
 void append_LinkedList(LinkedList *list, void *element)
 {
-  LinkedNode *node = createLinkedNode(element);
-
   // Case: no elements
   if (list->head == NULL && list->tail == NULL && list->size == 0)
   {
     prepend_LinkedList(list, element);
     return;
   }
+
+  LinkedNode *node = createLinkedNode(element);
 
   // Case: has one element
   if (list->size == 1 && list->head == list->tail)
@@ -107,12 +107,10 @@ void prepend_LinkedList(LinkedList *list, void *element)
 
 void insertAt_LinkedList(LinkedList *list, void *element, size_t size)
 {
-  LinkedNode *node = createLinkedNode(element);
-
   // Case: no elements
   if (list->head == NULL && list->tail == NULL && list->size == 0)
   {
-    append_LinkedList(list, node);
+    append_LinkedList(list, element);
     return;
   }
 
@@ -120,13 +118,14 @@ void insertAt_LinkedList(LinkedList *list, void *element, size_t size)
   if (list->size == 1 && list->head == list->tail)
   {
     if (size >= list->size)
-      append_LinkedList(list, node);
+      append_LinkedList(list, element);
     else
-      prepend_LinkedList(list, node);
+      prepend_LinkedList(list, element);
     return;
   }
 
   // Case: has two or more elements
+  LinkedNode *node = createLinkedNode(element);
   LinkedNode *current = list->head;
   for (size_t i = 0; current->next != NULL && i != size; i++)
     current = current->next;
