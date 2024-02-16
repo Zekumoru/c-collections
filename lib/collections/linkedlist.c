@@ -141,7 +141,11 @@ void insertAt_LinkedList(LinkedList *list, void *element, size_t size)
 
 size_t indexOf_LinkedList(LinkedList *list, void *element)
 {
-  // stub!
+  size_t index = 0;
+  for (LinkedNode *current = list->head; current != NULL; current = current->next, index++)
+    if (current->value == element)
+      return index;
+  return -1;
 }
 
 void *removeBeg_LinkedList(LinkedList *list)
