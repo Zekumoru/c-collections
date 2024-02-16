@@ -225,10 +225,21 @@ void *remove_LinkedList(LinkedList *list, void *element)
   return removedElement;
 }
 
-void *removeAt_LinkedList(LinkedList *list, size_t index)
+void *removeAt_LinkedList(LinkedList *list, size_t indexToRemove)
 {
-  // stub!
-  return NULL;
+  void *elementToRemove = NULL;
+
+  // Case: index given greater than the list's size
+  if (indexToRemove >= list->size && list->tail != NULL)
+    elementToRemove = list->tail->value;
+
+  // Case: element to remove is somewhere in the start/middle
+  size_t index = 0;
+  for (LinkedNode *current = list->head; current != NULL && elementToRemove == NULL; current = current->next, index++)
+    if (index == indexToRemove)
+      elementToRemove = current->value;
+
+  return remove_LinkedList(list, elementToRemove);
 }
 
 void removeAll_LinkedList(LinkedList *list, void (*destroyElementFn)(void *element))
