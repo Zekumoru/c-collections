@@ -244,7 +244,14 @@ void *removeAt_LinkedList(LinkedList *list, size_t indexToRemove)
 
 void removeAll_LinkedList(LinkedList *list, void (*destroyElementFn)(void *element))
 {
-  // stub!
+  LinkedNode *current = list->head;
+  while (current != NULL)
+  {
+    current = current->next;
+    void *removedElement = removeBeg_LinkedList(list);
+    if (destroyElementFn != NULL)
+      destroyElementFn(removedElement);
+  }
 }
 
 char *toString_LinkedList(LinkedList *list, char *(*stringifyFn)(void *element))
