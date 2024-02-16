@@ -293,5 +293,6 @@ char *toString_LinkedList(LinkedList *list, char *(*stringifyFn)(void *element))
 
 void destroy_LinkedList(LinkedList *list, void (*destroyElementFn)(void *element))
 {
-  // stub!
+  removeAll_LinkedList(list, destroyElementFn);
+  free(list);
 }
