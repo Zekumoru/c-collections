@@ -70,6 +70,7 @@ void append_LinkedList(LinkedList *list, void *element)
   list->tail = node;
   prevTail->next = node;
   node->prev = prevTail;
+  list->size++;
 }
 
 void prepend_LinkedList(LinkedList *list, void *element)
@@ -100,6 +101,7 @@ void prepend_LinkedList(LinkedList *list, void *element)
   list->head = node;
   prevHead->prev = node;
   node->next = prevHead;
+  list->size++;
 }
 
 void insertAt_LinkedList(LinkedList *list, void *element, size_t size)
