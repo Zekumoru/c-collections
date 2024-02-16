@@ -107,7 +107,34 @@ void prepend_LinkedList(LinkedList *list, void *element)
 
 void insertAt_LinkedList(LinkedList *list, void *element, size_t size)
 {
-  // stub!
+  LinkedNode *node = createLinkedNode(element);
+
+  // Case: no elements
+  if (list->head == NULL && list->tail == NULL && list->size == 0)
+  {
+    append_LinkedList(list, node);
+    return;
+  }
+
+  // Case: has one element
+  if (list->size == 1 && list->head == list->tail)
+  {
+    if (size >= list->size)
+      append_LinkedList(list, node);
+    else
+      prepend_LinkedList(list, node);
+    return;
+  }
+
+  // Case: has two or more elements
+  LinkedNode *current = list->head;
+  for (size_t i = 0; current->next != NULL && i != size; i++)
+    current = current->next;
+  node->prev = current->prev;
+  node->next = current;
+  current->prev = node;
+  node->prev->next = node;
+  list->size++;
 }
 
 size_t indexOf_LinkedList(LinkedList *list, void *element)
