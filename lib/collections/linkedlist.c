@@ -46,7 +46,30 @@ LinkedNode *createLinkedNode(void *value)
 
 void append_LinkedList(LinkedList *list, void *element)
 {
-  // stub!
+  LinkedNode *node = createLinkedNode(element);
+
+  // Case: no elements
+  if (list->head == NULL && list->tail == NULL && list->size == 0)
+  {
+    prepend_LinkedList(list, element);
+    return;
+  }
+
+  // Case: has one element
+  if (list->size == 1 && list->head == list->tail)
+  {
+    list->tail = node;
+    list->head->next = node;
+    node->prev = list->head;
+    list->size++;
+    return;
+  }
+
+  // Case: has two or more elements
+  LinkedNode *prevTail = list->tail;
+  list->tail = node;
+  prevTail->next = node;
+  node->prev = prevTail;
 }
 
 void prepend_LinkedList(LinkedList *list, void *element)
