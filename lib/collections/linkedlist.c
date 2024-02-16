@@ -3,6 +3,8 @@
 #include <string.h>
 
 LinkedNode *createLinkedNode(void *value);
+void *destroyLinkedNode(LinkedNode *node);
+
 void append_LinkedList(LinkedList *list, void *element);
 void prepend_LinkedList(LinkedList *list, void *element);
 void insertAt_LinkedList(LinkedList *list, void *element, size_t size);
@@ -43,6 +45,13 @@ LinkedNode *createLinkedNode(void *value)
   node->next = NULL;
   node->prev = NULL;
   return node;
+}
+
+void *destroyLinkedNode(LinkedNode *node)
+{
+  void *element = node->value;
+  free(node);
+  return element;
 }
 
 void append_LinkedList(LinkedList *list, void *element)
@@ -150,8 +159,20 @@ size_t indexOf_LinkedList(LinkedList *list, void *element)
 
 void *removeBeg_LinkedList(LinkedList *list)
 {
-  // stub!
-  return NULL;
+  if (list->head == NULL && list->tail == NULL && list->size == 0)
+    return NULL;
+
+  // unchain head
+  LinkedNode *nextHead = list->head->next;
+  void *removedElement = destroyLinkedNode(list->head);
+  list->head = nextHead;
+  if (nextHead != NULL)
+    nextHead->prev = NULL;
+  else
+    list->tail = NULL;
+  list->size--;
+
+  return removedElement;
 }
 
 void *removeEnd_LinkedList(LinkedList *list)
