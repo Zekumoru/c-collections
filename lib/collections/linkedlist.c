@@ -177,8 +177,20 @@ void *removeBeg_LinkedList(LinkedList *list)
 
 void *removeEnd_LinkedList(LinkedList *list)
 {
-  // stub!
-  return NULL;
+  if (list->head == NULL && list->tail == NULL && list->size == 0)
+    return NULL;
+
+  // unchain tail
+  LinkedNode *nextTail = list->tail->prev;
+  void *removedElement = destroyLinkedNode(list->tail);
+  list->tail = nextTail;
+  if (nextTail != NULL)
+    nextTail->next = NULL;
+  else
+    list->head = NULL;
+  list->size--;
+
+  return removedElement;
 }
 
 void *remove_LinkedList(LinkedList *list, void *element)
