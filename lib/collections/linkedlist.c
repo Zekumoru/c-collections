@@ -1,5 +1,6 @@
 #include "linkedlist.h"
 #include <stdlib.h>
+#include <string.h>
 
 LinkedNode *createLinkedNode(void *value);
 void append_LinkedList(LinkedList *list, void *element);
@@ -145,8 +146,39 @@ void removeAll_LinkedList(LinkedList *list, void (*destroyElementFn)(void *eleme
 
 char *toString_LinkedList(LinkedList *list, char *(*stringifyFn)(void *element))
 {
-  // stub!
-  return NULL;
+  if (stringifyFn == NULL)
+    return NULL;
+
+  // '[', ']', '\0' plus ", " for each element exluding the last element
+  size_t length = 1 + 1 + 1 + 2 * (list->size - 1);
+
+  // extract each stringified version of the elements
+  LinkedList *elementStrings = createLinkedList();
+  for (LinkedNode *current = list->head; current != NULL; current = current->next)
+  {
+    elementStrings->append(elementStrings, stringifyFn(current->value));
+    if (elementStrings->tail->value != NULL)
+      length += strlen(elementStrings->tail->value);
+  }
+
+  // build string list and also free the elements' strings
+  char *stringified = malloc(length);
+  strcpy(stringified, "[");
+  for (LinkedNode *current = elementStrings->head; current != NULL; current = current->next)
+  {
+    if (current->value != NULL)
+    {
+      strcat(stringified, current->value);
+      free(current->value);
+    }
+
+    if (current->next != NULL)
+      strcat(stringified, ", ");
+  }
+  strcat(stringified, "]");
+  free(elementStrings); // TODO: use the destroy function when it's done
+
+  return stringified;
 }
 
 void destroy_LinkedList(LinkedList *list, void (*destroyElementFn)(void *element))
