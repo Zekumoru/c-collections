@@ -27,39 +27,28 @@ char *stringifyInteger(Integer *integer)
   return integerString;
 }
 
+int compareIntegers(Integer *a, Integer *b)
+{
+  return a->value - b->value;
+}
+
 int main()
 {
-  LinkedList *list = createLinkedList();
+  RBTree *tree = createRBTree((int (*)(void *, void *))compareIntegers);
 
-  Integer *one = createInteger(1);
-  Integer *two = createInteger(2);
-  Integer *three = createInteger(3);
-  Integer *four = createInteger(4);
-  Integer *five = createInteger(5);
-  Integer *six = createInteger(6);
-  Integer *seven = createInteger(7);
+  Integer *i50 = createInteger(50);
+  Integer *i10 = createInteger(10);
+  Integer *i30 = createInteger(30);
+  Integer *i40 = createInteger(40);
+  Integer *i35 = createInteger(35);
+  Integer *i32 = createInteger(32);
 
-  list->append(list, one);
-  list->append(list, two);
-  list->append(list, three);
-  list->append(list, four);
-  list->append(list, five);
-  list->append(list, six);
-  list->append(list, seven);
+  tree->insert(tree, i50);
+  tree->insert(tree, i10);
+  tree->insert(tree, i30);
+  tree->insert(tree, i40);
+  tree->insert(tree, i35);
+  tree->insert(tree, i32);
 
-  char *str = list->toString(list, (char *(*)(void *))stringifyInteger);
-  printf("List: %s\n", str);
-  free(str);
-
-  printf("List from tail: [");
-  for (LinkedNode *current = list->tail; current != NULL; current = current->prev)
-  {
-    printf("%d", ((Integer *)current->value)->value);
-    if (current->prev != NULL)
-      printf(", ");
-  }
-  printf("]\n");
-
-  list->destroy(list, (void (*)(void *))destroyInteger);
   return 0;
 }
