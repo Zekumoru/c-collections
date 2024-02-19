@@ -100,6 +100,7 @@ bool insert_RBTree(struct RBTree *tree, void *element)
   {
     node->color = RB_BLACK;
     tree->root = node;
+    tree->size++;
     return true;
   }
 
@@ -133,7 +134,10 @@ bool insert_RBTree(struct RBTree *tree, void *element)
 
   // Case: no grandparent
   if (grandparent == NULL)
+  {
+    tree->size++;
     return true;
+  }
 
   RBNode *sibling;
 
@@ -208,6 +212,7 @@ bool insert_RBTree(struct RBTree *tree, void *element)
     }
   }
 
+  tree->size++;
   return true;
 }
 
